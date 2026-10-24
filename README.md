@@ -228,11 +228,24 @@ curl -X DELETE "http://127.0.0.1:8000/students/1"
 
 ---
 
-## 🌐 Public Live Deployment Guide (Render)
+## 🌐 Public Live Deployment Guides
 
-The application is structured to serve both the backend API and frontend UI from a single unified service. This makes hosting simple and eliminates CORS issues.
+### Option 1: Deploying to Vercel (Fastest & 1-Click via GitHub)
 
-### Deploying to Render.com (Recommended Free Tier)
+The repository comes pre-configured with [`vercel.json`](file:///D:/mine/students-crud-app/vercel.json) and [`api/index.py`](file:///D:/mine/students-crud-app/api/index.py) for automatic serverless FastAPI deployment.
+
+1. Go to **[https://vercel.com/new](https://vercel.com/new)** and log in with your GitHub account (`sivaraam-official`).
+2. Under **"Import Git Repository"**, find **`studenthub`** and click **Import**.
+3. In the project configuration:
+   - **Framework Preset**: Select **Other**.
+   - **Root Directory**: `./` (leave default).
+4. Click **Deploy**.
+5. Within 45 seconds, Vercel will complete the build and assign your live production URL (e.g., `https://studenthub.vercel.app`).
+6. Your live website, API endpoints, and Swagger docs (`/docs`) will be live immediately under the same domain.
+
+---
+
+### Option 2: Deploying to Render.com
 
 1. **Push your code to GitHub**:
    ```bash
