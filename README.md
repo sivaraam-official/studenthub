@@ -12,6 +12,7 @@ StudentHub is a production-ready, full-stack Student Records Management System d
 - **Developer Role**: Full-Stack Python Backend Development Intern
 - **Organization**: EWB Edu Tech Pvt. Ltd.
 - **Project Directory**: `D:\mine\students-crud-app`
+- **GitHub Repository**: [https://github.com/sivaraamofficial/studenthub](https://github.com/sivaraamofficial/studenthub)
 - **Frontend Architecture**: Responsive Single-Page Application (HTML5, Vanilla JS, CSS3)
 - **Backend Architecture**: RESTful API with FastAPI and Uvicorn
 - **Database Engine**: SQLite 3 with SQLAlchemy ORM (persistent disk storage)
@@ -236,11 +237,7 @@ The application is structured to serve both the backend API and frontend UI from
 1. **Push your code to GitHub**:
    ```bash
    cd D:\mine\students-crud-app
-   git init
-   git add .
-   git commit -m "Initial commit: StudentHub CRUD application"
-   git branch -M main
-   git remote add origin https://github.com/<your-username>/<your-repo-name>.git
+   git remote add origin https://github.com/sivaraamofficial/studenthub.git
    git push -u origin main
    ```
 
