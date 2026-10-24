@@ -1,0 +1,3 @@
+"""
+StudentHub Automated Test Suite
+"""
