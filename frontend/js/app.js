@@ -747,8 +747,13 @@ DOM.cancelDeleteBtn.addEventListener("click", () => closeModal(DOM.deleteModal))
 
 // Refresh button
 DOM.refreshBtn.addEventListener("click", async () => {
-  showToast("Syncing", "Refreshing data from database...", "warning");
-  await Promise.all([loadStudents(), loadStats(), checkBackendHealth()]);
+  try {
+    DOM.refreshBtn.disabled = true;
+    await Promise.all([loadStudents(), loadStats(), checkBackendHealth()]);
+    showToast("Database Synced", "All student records are up to date.", "success");
+  } finally {
+    DOM.refreshBtn.disabled = false;
+  }
 });
 
 // Mobile menu toggle

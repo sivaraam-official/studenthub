@@ -11,8 +11,11 @@ StudentHub is a production-ready, full-stack Student Records Management System d
 - **Application Name**: StudentHub
 - **Developer Role**: Full-Stack Python Backend Development Intern
 - **Organization**: EWB Edu Tech Pvt. Ltd.
-- **Project Directory**: `D:\mine\students-crud-app`
+- **Live Deployed Application**: [https://studenthub-seven-theta.vercel.app](https://studenthub-seven-theta.vercel.app)
+- **Live Swagger API Docs**: [https://studenthub-seven-theta.vercel.app/docs](https://studenthub-seven-theta.vercel.app/docs)
+- **Live Health Status**: [https://studenthub-seven-theta.vercel.app/health](https://studenthub-seven-theta.vercel.app/health)
 - **GitHub Repository**: [https://github.com/sivaraam-official/studenthub](https://github.com/sivaraam-official/studenthub)
+- **Project Directory**: `D:\mine\students-crud-app`
 - **Frontend Architecture**: Responsive Single-Page Application (HTML5, Vanilla JS, CSS3)
 - **Backend Architecture**: RESTful API with FastAPI and Uvicorn
 - **Database Engine**: SQLite 3 with SQLAlchemy ORM (persistent disk storage)
