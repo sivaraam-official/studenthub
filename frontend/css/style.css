@@ -139,6 +139,12 @@ body {
   font-weight: 500;
   border-radius: var(--radius-sm);
   transition: var(--transition);
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
 }
 
 .nav-link:hover {

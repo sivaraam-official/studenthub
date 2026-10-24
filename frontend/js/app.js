@@ -26,6 +26,10 @@ const DOM = {
   sidebarBackdrop: document.getElementById("sidebar-backdrop"),
   menuToggle: document.getElementById("menu-toggle"),
   backendStatusText: document.getElementById("backend-status-text"),
+  healthStatusBadge: document.getElementById("health-status-badge"),
+  navDashboard: document.getElementById("nav-dashboard"),
+  navStudents: document.getElementById("nav-students"),
+  navHealth: document.getElementById("nav-health"),
   
   // Header Actions
   refreshBtn: document.getElementById("refresh-btn"),
@@ -77,6 +81,18 @@ const DOM = {
   closeDeleteModal: document.getElementById("close-delete-modal"),
   cancelDeleteBtn: document.getElementById("cancel-delete-btn"),
   confirmDeleteBtn: document.getElementById("confirm-delete-btn"),
+  
+  // Health Modal
+  healthModal: document.getElementById("health-modal"),
+  closeHealthModal: document.getElementById("close-health-modal"),
+  recheckHealthBtn: document.getElementById("recheck-health-btn"),
+  modalApiStatus: document.getElementById("modal-api-status"),
+  modalDbStatus: document.getElementById("modal-db-status"),
+  modalTotalRecords: document.getElementById("modal-total-records"),
+  modalLatency: document.getElementById("modal-latency"),
+  modalVersion: document.getElementById("modal-version"),
+  modalCheckedAt: document.getElementById("modal-checked-at"),
+  modalHealthBadge: document.getElementById("modal-health-badge"),
   
   // Toast
   toastContainer: document.getElementById("toast-container"),
@@ -763,9 +779,140 @@ DOM.menuToggle.addEventListener("click", () => {
 });
 
 DOM.sidebarBackdrop.addEventListener("click", () => {
+  closeMobileSidebar();
+});
+
+function closeMobileSidebar() {
   DOM.sidebar.classList.remove("open");
   DOM.sidebarBackdrop.classList.remove("show");
-});
+}
+
+// Sidebar Navigation Actions
+if (DOM.navDashboard) {
+  DOM.navDashboard.addEventListener("click", (e) => {
+    e.preventDefault();
+    DOM.navDashboard.classList.add("active");
+    if (DOM.navStudents) DOM.navStudents.classList.remove("active");
+    const dash = document.getElementById("dashboard");
+    if (dash) {
+      dash.scrollIntoView({ behavior: "smooth" });
+    }
+    closeMobileSidebar();
+  });
+}
+
+if (DOM.navStudents) {
+  DOM.navStudents.addEventListener("click", (e) => {
+    e.preventDefault();
+    DOM.navStudents.classList.add("active");
+    if (DOM.navDashboard) DOM.navDashboard.classList.remove("active");
+    const tableSection = document.getElementById("students-section");
+    if (tableSection) {
+      tableSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(() => {
+        if (DOM.searchInput) DOM.searchInput.focus();
+      }, 350);
+    }
+    closeMobileSidebar();
+  });
+}
+
+// Health Diagnostics Modal & Actions
+async function openHealthDiagnostics() {
+  openModal(DOM.healthModal);
+  closeMobileSidebar();
+  await runHealthDiagnostics();
+}
+
+async function runHealthDiagnostics() {
+  if (DOM.recheckHealthBtn) {
+    setButtonLoading(DOM.recheckHealthBtn, true, "Running Check...");
+  }
+
+  const startTime = Date.now();
+  try {
+    const [health, stats] = await Promise.all([
+      window.ApiService.getHealth(),
+      window.ApiService.getStats(),
+    ]);
+    const latency = Date.now() - startTime;
+
+    if (DOM.modalApiStatus) {
+      DOM.modalApiStatus.textContent = health.status === "healthy" ? "Healthy (200 OK)" : health.status;
+      DOM.modalApiStatus.style.color = health.status === "healthy" ? "var(--success)" : "var(--danger)";
+    }
+
+    if (DOM.modalDbStatus) {
+      DOM.modalDbStatus.textContent = health.database === "connected" ? "Connected (SQLite 3)" : health.database;
+      DOM.modalDbStatus.style.color = health.database === "connected" ? "var(--success)" : "var(--danger)";
+    }
+
+    if (DOM.modalTotalRecords) {
+      DOM.modalTotalRecords.textContent = `${stats.total_students ?? 0} students enrolled`;
+    }
+
+    if (DOM.modalLatency) {
+      DOM.modalLatency.textContent = `${latency} ms`;
+    }
+
+    if (DOM.modalVersion) {
+      DOM.modalVersion.textContent = health.version || "1.0.0";
+    }
+
+    if (DOM.modalCheckedAt) {
+      DOM.modalCheckedAt.textContent = new Date().toLocaleTimeString();
+    }
+
+    if (DOM.modalHealthBadge) {
+      if (health.status === "healthy") {
+        DOM.modalHealthBadge.textContent = "● Operational";
+        DOM.modalHealthBadge.style.backgroundColor = "var(--success-light)";
+        DOM.modalHealthBadge.style.color = "var(--success-text)";
+      } else {
+        DOM.modalHealthBadge.textContent = "● Degraded";
+        DOM.modalHealthBadge.style.backgroundColor = "var(--warning-light)";
+        DOM.modalHealthBadge.style.color = "var(--warning)";
+      }
+    }
+  } catch (err) {
+    if (DOM.modalApiStatus) {
+      DOM.modalApiStatus.textContent = "Offline / Connection Error";
+      DOM.modalApiStatus.style.color = "var(--danger)";
+    }
+    if (DOM.modalDbStatus) {
+      DOM.modalDbStatus.textContent = "Disconnected";
+      DOM.modalDbStatus.style.color = "var(--danger)";
+    }
+    if (DOM.modalLatency) {
+      DOM.modalLatency.textContent = "Timed out";
+    }
+    if (DOM.modalHealthBadge) {
+      DOM.modalHealthBadge.textContent = "● Offline";
+      DOM.modalHealthBadge.style.backgroundColor = "var(--danger-light)";
+      DOM.modalHealthBadge.style.color = "var(--danger-text)";
+    }
+  } finally {
+    if (DOM.recheckHealthBtn) {
+      setButtonLoading(DOM.recheckHealthBtn, false, "Run Check Again");
+    }
+  }
+}
+
+if (DOM.navHealth) {
+  DOM.navHealth.addEventListener("click", openHealthDiagnostics);
+}
+
+if (DOM.healthStatusBadge) {
+  DOM.healthStatusBadge.addEventListener("click", openHealthDiagnostics);
+}
+
+if (DOM.closeHealthModal) {
+  DOM.closeHealthModal.addEventListener("click", () => closeModal(DOM.healthModal));
+}
+
+if (DOM.recheckHealthBtn) {
+  DOM.recheckHealthBtn.addEventListener("click", runHealthDiagnostics);
+}
 
 // ==========================================
 // BACKEND HEALTH CHECK

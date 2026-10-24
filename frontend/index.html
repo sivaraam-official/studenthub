@@ -44,18 +44,18 @@
         <span>Swagger API Docs ↗</span>
       </a>
 
-      <a href="/health" target="_blank" rel="noopener noreferrer" class="nav-link">
+      <button type="button" class="nav-link" id="nav-health">
         <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
         </svg>
-        <span>Health Status ↗</span>
-      </a>
+        <span>Health Status</span>
+      </button>
     </nav>
 
     <div class="sidebar-footer">
-      <div class="status-pill" id="health-status-badge">
+      <div class="status-pill" id="health-status-badge" style="cursor: pointer;" title="Click to view detailed system health">
         <span class="pulse-dot"></span>
-        <span id="backend-status-text">Backend Connected</span>
+        <span id="backend-status-text">Backend Online</span>
       </div>
     </div>
   </aside>
@@ -395,6 +395,69 @@
         <button type="button" class="btn btn-secondary" id="cancel-delete-btn">Cancel</button>
         <button type="button" class="btn btn-danger" id="confirm-delete-btn">
           <span>Delete Record</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: HEALTH & DIAGNOSTICS STATUS
+       ========================================================================== -->
+  <div class="modal-backdrop" id="health-modal">
+    <div class="modal-content" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3>System & Database Health</h3>
+        <button class="modal-close" id="close-health-modal" aria-label="Close modal">✕</button>
+      </div>
+      <div class="modal-body" id="health-modal-body">
+        <div class="profile-card">
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 0.85rem; border-bottom: 1px solid var(--border-color);">
+            <div>
+              <h4 style="font-size: 1.15rem; font-weight: 700;">FastAPI + SQLite Engine</h4>
+              <p style="font-size: 0.82rem; color: var(--text-muted);">Operational Health Diagnostics</p>
+            </div>
+            <span class="badge" id="modal-health-badge" style="background-color: var(--success-light); color: var(--success-text); font-size: 0.85rem; padding: 0.35rem 0.75rem;">
+              ● Operational
+            </span>
+          </div>
+
+          <div class="detail-row">
+            <span class="detail-label">API Status:</span>
+            <span class="detail-value" style="color: var(--success);" id="modal-api-status">Healthy (200 OK)</span>
+          </div>
+
+          <div class="detail-row">
+            <span class="detail-label">Database Connection:</span>
+            <span class="detail-value" style="color: var(--success);" id="modal-db-status">Connected (SQLite 3)</span>
+          </div>
+
+          <div class="detail-row">
+            <span class="detail-label">Total Student Records:</span>
+            <span class="detail-value" id="modal-total-records">5 records</span>
+          </div>
+
+          <div class="detail-row">
+            <span class="detail-label">Response Latency:</span>
+            <span class="detail-value" id="modal-latency">-- ms</span>
+          </div>
+
+          <div class="detail-row">
+            <span class="detail-label">API Version:</span>
+            <span class="detail-value" id="modal-version">1.0.0</span>
+          </div>
+
+          <div class="detail-row">
+            <span class="detail-label">Checked At:</span>
+            <span class="detail-value" id="modal-checked-at">Just now</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="justify-content: space-between;">
+        <a href="/health" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="font-size: 0.8rem;">
+          Raw JSON ↗
+        </a>
+        <button type="button" class="btn btn-primary" id="recheck-health-btn">
+          <span>Run Check Again</span>
         </button>
       </div>
     </div>
