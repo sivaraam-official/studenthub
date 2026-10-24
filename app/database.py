@@ -16,8 +16,12 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Database URL configuration
-# Default: SQLite database file in project root
-DEFAULT_DB_PATH = BASE_DIR / "students.db"
+# On Vercel Serverless, the root filesystem is read-only, so SQLite must reside in /tmp
+if os.getenv("VERCEL") == "1":
+    DEFAULT_DB_PATH = Path("/tmp/students.db")
+else:
+    DEFAULT_DB_PATH = BASE_DIR / "students.db"
+
 DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{DEFAULT_DB_PATH.as_posix()}")
 
 # SQLite requires specific connect args for multi-threaded FastAPI apps
